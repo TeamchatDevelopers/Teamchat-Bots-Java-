@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="Sales-PlanActuals01">
+        <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <dependent-module archiveName="Solutions-ZohoReports.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/Solutions-ZohoReports/Solutions-ZohoReports">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="Zoho-Report-Libraries.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/Zoho-Report-Libraries/Zoho-Report-Libraries">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="java-output-path" value="/Sales-PlanActuals01/build/classes"/>
+        <property name="context-root" value="Sales-PlanActuals01"/>
+    </wb-module>
+</project-modules>

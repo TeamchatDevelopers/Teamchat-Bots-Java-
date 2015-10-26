@@ -1,0 +1,17 @@
+package com.teamchat.integration.texttospeech;
+
+public class Utility
+{
+	public static final String help = "<center><img src='http://integration.teamchat.com/sol/bot-images/texttospeech.png' width='150' /></center><h3 style='color:#159ceb'>Hi, I am the Text-to-Speech Bot </h3><div><p>I will convert the entered text to speech</p> Please click <b>Convert</b> button to enter the text</div><div>You can also use the keyword <b>tts</b> to convert text to speech</div>";
+	public static final String image = "<center><img src='http://integration.teamchat.com/sol/bot-images/texttospeech.png' width='150' /></center>";
+	public static final String sorry = "<center><img src='http://integration.teamchat.com/sol/bot-images/texttospeech.png' width='150' /></center>"
+						+ "<div><p style='padding-left:5px; padding-right:5px;align:center; margin-top:5px'>Sorry! no results.</p></div>";
+	
+	public static final String paraStart = "<div><p style='padding-right:5px; padding-left:5px; margin-top:5px;'><b>Click on the below link: </b></p><p style='padding-right:5px; padding-left:5px; margin-top:5px;'>";
+	public static final String paraEnd = "</p></div>";
+	public static final String serverLocal = "http://integration.teamchat.com:8084/TextToSpeech/audio.html?lang=__Lang&text=__EncodedText";
+	//public static final String serverLocal = "http://localhost:8080/TextToSpeech/audio.html?lang=__Lang&text=__EncodedText";
+	public static final String resp = image + paraStart + "<a href='__url'>__Text</a>" + paraEnd;
+	
+	public static final String htmlLink = "{\"content\":{\"text\":\"Audio\",\"html\":\"__html\"},\"type\":\"primary\",\"actions\":{\"actitem\":[]},\"displayname\":\"HTML5\",\"xslt\":\"primary-2.7.2\",\"minCrv\":\"3\",\"comments\":{\"addcomment\":\"true\"}}";
+}

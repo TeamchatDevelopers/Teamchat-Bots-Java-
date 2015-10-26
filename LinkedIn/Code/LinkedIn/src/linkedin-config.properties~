@@ -1,0 +1,10 @@
+botemail=[bot-email]
+botpass=[bot-pass]
+dbname=[db-name]
+dbuser=[db-user]
+dbpass=[db-pass]
+linktable=linkdata
+accesstable=accessdata
+apikey=[api-key]
+apisecret=[api-secret]
+server = http://integration.teamchat.com:8084/LinkedIn/AuthHandler
