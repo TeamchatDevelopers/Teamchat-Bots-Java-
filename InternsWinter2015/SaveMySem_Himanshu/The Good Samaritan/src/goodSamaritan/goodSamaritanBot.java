@@ -554,12 +554,13 @@ public class goodSamaritanBot {
       		sql2 = "SELECT uploader, course, rating, count, fileurl, description FROM T1 where course='"+courseSelected+"' ORDER BY rating DESC";
       		ResultSet rs1 = stmt.executeQuery(sql2);
       		//////////////////////////////////////////////////////////////////////////
-
+      		/*
       		while(rs1.next())
       		{
       			
       			System.out.println(rs1.getString("description"));
       		}
+      		*/
       		//////////////////////////////////////////////////////////////////////////
       		//here rs1 is the table visible to user
       		Integer numrow = Integer.valueOf(row);
@@ -639,6 +640,7 @@ public class goodSamaritanBot {
     	System.out.println("Rated by: "+api.context().currentReply().senderEmail());
     }
     
+    //To display the help menu
     @OnKeyword(isCaseSensitive=false, value="help")
     public void helpMenu(TeamchatAPI api)
     {
@@ -775,6 +777,8 @@ public class goodSamaritanBot {
     	p4.alias("helpReply");
     	api.performPostInCurrentRoom(p4);
     }
+    
+    //To handle the reply to help chatlet
     @OnAlias("helpReply")
     public void handleReply4(TeamchatAPI api)
     {
