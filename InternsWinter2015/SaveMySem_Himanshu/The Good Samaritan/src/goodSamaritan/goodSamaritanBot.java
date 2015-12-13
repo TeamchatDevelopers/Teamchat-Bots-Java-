@@ -11,7 +11,7 @@ import com.teamchat.client.sdk.Field;
 //import com.teamchat.client.annotations.OnComment;
 import com.teamchat.client.sdk.Form;
 import com.teamchat.client.sdk.TeamchatAPI;
-import com.teamchat.client.sdk.chatlets.TextChatlet;
+//import com.teamchat.client.sdk.chatlets.TextChatlet;
 import com.teamchat.client.sdk.chatlets.PrimaryChatlet;
 //import com.teamchat.client.sdk.chatlets.HTML5Chatlet;
 //import com.teamchat.client.sdk.Chatlet;
@@ -22,6 +22,8 @@ import com.teamchat.client.sdk.chatlets.PrimaryChatlet;
 import java.sql.*;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.lang.Float;
+import java.lang.Math.*;
 
 public class goodSamaritanBot {
 	//api key of the bot
@@ -36,17 +38,22 @@ public class goodSamaritanBot {
 	static final String USER = "root";
     static final String PASS = "Cyanide#007";
 
-    //a function to sort a 2D array according to 3rd column
+    //a function to sort a 2D array according to 3rd column (average ratings)
     public static String[][] sortMyArray(String[][] arr)
     {
-    	Arrays.sort(arr, new Comparator<String[]>() {
-            @Override
-            public int compare(final String[] entry1, final String[] entry2) {
-                final String time1 = entry1[2];
-                final String time2 = entry2[2];
-                return time2.compareTo(time1);
-            }
-        });
+    	Arrays.sort
+    	(
+    		arr, new Comparator<String[]>()
+    		{
+    			@Override
+    			public int compare(final String[] entry1, final String[] entry2)
+    			{
+    				float time1 = Float.valueOf(entry1[2]);
+    				float time2 = Float.valueOf(entry2[2]);
+    				return (int) java.lang.Math.signum(time2-time1);
+    			}
+    		}
+    	);
     	return arr;
     }
     
@@ -145,7 +152,9 @@ public class goodSamaritanBot {
 				rs.next();
 				i++;
             }
+            
             response=sortMyArray(response);
+            
             rs.close();
             
             PrimaryChatlet resp = new PrimaryChatlet();
@@ -514,7 +523,7 @@ public class goodSamaritanBot {
     {
     	String sender=api.context().currentReply().senderEmail();
     	String course=api.context().currentReply().getField("courseOpt");
-    	showTable(api,sender, course);
+    	showTable(api, sender, course);
     }
     
     @OnAlias("rateNotes")
@@ -544,15 +553,23 @@ public class goodSamaritanBot {
     		String sql2;
       		sql2 = "SELECT uploader, course, rating, count, fileurl, description FROM T1 where course='"+courseSelected+"' ORDER BY rating DESC";
       		ResultSet rs1 = stmt.executeQuery(sql2);
+      		//////////////////////////////////////////////////////////////////////////
+
+      		while(rs1.next())
+      		{
+      			
+      			System.out.println(rs1.getString("description"));
+      		}
+      		//////////////////////////////////////////////////////////////////////////
       		//here rs1 is the table visible to user
-      		int numrow = Integer.valueOf(row);
-      		int ratingGiven = Integer.valueOf(strRatingGiven);
+      		Integer numrow = Integer.valueOf(row);
+      		Integer ratingGiven = Integer.valueOf(strRatingGiven);
             rs1.absolute(numrow);
             //credentials of the file which the user wants to rate, using rs1
             String uploader_user1 = rs1.getString("uploader");
            	String course1 = rs1.getString("course");
            	float ave_rating1 = rs1.getFloat("rating");
-           	int num_users = rs1.getInt("count");
+           	Integer num_users = rs1.getInt("count");
            	String fileloc1 = rs1.getString("fileurl");
            	String descr2 = rs1.getString("description");
            	rs1.close();
