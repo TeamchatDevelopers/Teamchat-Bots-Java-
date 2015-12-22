@@ -1,17 +1,13 @@
 package webcrawler;
 
-//import com.teamchat.client.annotations.OnAlias;
-//import com.teamchat.client.annotations.OnKeyword;
-//import com.teamchat.client.sdk.Field;
-//import com.teamchat.client.sdk.Form;
+import com.teamchat.client.annotations.OnKeyword;
 import com.teamchat.client.sdk.Room;
 import com.teamchat.client.sdk.TeamchatAPI;
-//import com.teamchat.client.sdk.chatlets.PrimaryChatlet;
-//import com.teamchat.client.sdk.chatlets.TextChatlet;
 import com.teamchat.client.sdk.chatlets.PollChatlet;
+
+import java.util.Properties;
 import java.util.Vector;
 
-//import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -24,17 +20,20 @@ import static org.quartz.TriggerBuilder.*;
 import static org.quartz.CronScheduleBuilder.*;
 import org.quartz.impl.StdSchedulerFactory;
 
-//import java.util.Comparator;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+
+import java.lang.*;
 
 public class webCrawler {
 	// api key of the bot
 	public static final String authKey = "2b7b3f733e724b32cba0241d1a3e4e20";
-	// public Vector <String> categories = new Vector <String>();
 	public Vector<String> storyTitles = new Vector<String>();
 	public Vector<String> links = new Vector<String>();
 	public Vector<String> pubDates = new Vector<String>();
 	public Vector<String> storyDescriptions = new Vector<String>();
+	public static Properties properties = new Properties();
 
 	/**
 	 * This method creates instance of teamchat client, login using specified
@@ -47,6 +46,10 @@ public class webCrawler {
 		api.startReceivingEvents(wc);
 
 		try {
+			InputStream input = new FileInputStream("webCrawler.properties");
+			// Initialize the properties
+			properties.load(input);
+			input.close();
 			SchedulerFactory sf = new StdSchedulerFactory();
 			Scheduler sched = sf.getScheduler();
 			sched.start();
@@ -55,11 +58,12 @@ public class webCrawler {
 			JobDetail job = newJob(Schedule.class).withIdentity("news", "group1").build();
 			job.getJobDataMap().put("API", api);
 			job.getJobDataMap().put("WC", wc);
-
-			String interval = "5";
+			
+			String schedulerParam=properties.getProperty("scheduler_param");
+			//String schedulerParam="0 0/1 * * * ?";
 			// Trigger
 			CronTrigger trigger = newTrigger().withIdentity("Trigger", "group1")
-					.withSchedule(cronSchedule("0 0/1 * * * ?")).build();
+					.withSchedule(cronSchedule(schedulerParam)).build();
 			sched.scheduleJob(job, trigger);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -75,52 +79,50 @@ public class webCrawler {
 		datestr = detailedDate.substring(0, (len - 12));
 		timestr = detailedDate.substring((len - 12));
 
-		mystr = "   <head>  " + "       <style>  " +
-				/*
-				 * unvisited link "           a : link " + "           {  " +
-				 * "               color: red;  " + "           }  " +
-				 */
-				/*
-				 * visited link "           a : visited " + "           {  " +
-				 * "               color: green;  " + "           }  " +
-				 */
-				/* mouse over link */
-		"           a : hover " + "           {  " + "               font-size: 110% ;  " + "           }  " +
-				/*
-				 * selected link "           a : active " + "           {  " +
-				 * "               color: blue;  " + "           }  " +
-				 */
-				"           .story  " + "           {  " + "               padding: 2%;  " + "           }  "
-				+ "           h5.theTitle  " + "           {  " + "               text-align: center;  "
-				+ "               font-size: 120%;  " + "               text-transform: uppercase;  "
-				+ "               text-shadow: 1px 1px #737373;  " + "           }  " + "           p.datePara  "
-				+ "           {  " + "               text-align: left;  " + "               color: #999999;  "
-				+ "           }  " + "           p.description  " + "           {  "
-				+ "               text-align: left;  " + "           }  " + "       </style>  " + "   </head  "
-				+ "     " + "   <body>  " + "       <div class='story'>  " + "           <div class='storyTitle'>  "
-				+ "               <h5 class='theTitle'>  " + "                   <a href='" + links.elementAt(i)
-				+ "' title='Click here to read the whole story' target='_blank'>  " + storyTitles.elementAt(i)
-				+ "                   </a>  " + "               </h5>  " + "           </div>  "
-				+ "           <div class='date'>  " + "               <p class='datePara' title=' at " + timestr
-				+ " '>  " + "                   <i>" + datestr + "</i>  " + "               </p>  "
-				+ "           </div>  " + "           <div class='descr'>  "
-				+ "               <p class='description'>  " + storyDescriptions.elementAt(i) + "               </p>  "
-				+ "           </div>  " + "       </div>  " + "  </body>  ";
+		mystr =  properties.getProperty("styleString")
+				+ "   <body>  " 
+				+ "       <div class='story'>  " 
+				+ "           <div class='storyTitle'>  "
+				+ "               <h5 class='theTitle'>  " 
+				+ "                   <a href='" 
+				+ links.elementAt(i)
+				+ "' title='Click here to read the whole story' target='_blank'>  " 
+				+ storyTitles.elementAt(i)
+				+ "                   </a>  " 
+				+ "               </h5>  " 
+				+ "           </div>  "
+				+ "           <div class='date'>  " 
+				+ "               <p class='datePara' title=' at " 
+				+ timestr
+				+ " '>  " 
+				+ "                   <i>" 
+				+ datestr 
+				+ "</i>  " 
+				+ "               </p>  "
+				+ "           </div>  " 
+				+ "           <div class='descr'>  "
+				+ "               <p class='description'>  " 
+				+ storyDescriptions.elementAt(i) 
+				+ "               </p>  "
+				+ "           </div>  " 
+				+ "       </div>  " 
+				+ "  </body>  ";
 		return mystr;
 	}
 
-	public void setData() throws IOException {
+	public void setData(String urlAdd) throws IOException {
 		System.out.println("entered setData");
 		storyTitles.clear();
 		links.clear();
 		pubDates.clear();
 		storyDescriptions.clear();
-		Document doc = Jsoup.connect("http://msutoday.msu.edu/rss/sports/").get();
+		//String siteUrl=properties.getProperty("hostlink");
+		String siteUrl=urlAdd;
+		Document doc = Jsoup.connect(siteUrl).get();
 		Elements titleList = doc.getElementsByTag("title");// ignore the first
 		Elements linkList = doc.getElementsByTag("guid");
 		Elements dateList = doc.getElementsByTag("pubDate");
-		Elements descrList = doc.getElementsByTag("description");// ignore the
-																	// first
+		Elements descrList = doc.getElementsByTag("description");// ignore the first
 
 		int count = 0;
 		String tempstr = "";
@@ -160,7 +162,7 @@ public class webCrawler {
 		System.out.println("exiting setData");
 	}
 
-	public void showData(TeamchatAPI api) {
+	public void showData(TeamchatAPI api, String roomID) {
 		System.out.println("entered showData");
 		int i = 0;
 		for (i = 0; i < pubDates.size(); i++) {
@@ -185,18 +187,50 @@ public class webCrawler {
 			 */
 
 			// finally post the chatlet in the current room
-
-			Room R = api.context().byId("566124a730654fd96f9c36a1");
+			//String RoomID=properties.getProperty("roomID");
+			String RoomID=roomID;
+			Room R = api.context().byId(RoomID);
 			api.perform(R.post(p2));
 		}
 		System.out.println("exiting showData");
 	}
+	
+	public void showNews(TeamchatAPI api) throws IOException {		
 
-	// @OnKeyword(isCaseSensitive=false, value="msu")
-	public void searchCategories(TeamchatAPI api) throws IOException {
-		System.out.println("calling setData");
-		setData();
-		System.out.println("calling showData");
-		showData(api);
+		String[] url_list=(properties.getProperty("hostlink")).split(",");
+		String[] room_list=(properties.getProperty("roomID")).split(",");
+		int len=url_list.length;
+		for(int i=0; i<len; i++)
+		{
+			System.out.println("calling setData");
+			setData(url_list[i]);
+			System.out.println("calling showData");
+			showData(api, room_list[i]);
+		}
 	}
+	
+	@OnKeyword(value="msunews")
+	public void showNewsOnKeyword (TeamchatAPI api) throws IOException
+	{
+		String[] url_list=(properties.getProperty("hostlink")).split(",");
+		String[] room_list=(properties.getProperty("roomID")).split(",");
+		int len=url_list.length;
+		for(int i=0; i<len; i++)
+		{
+			if(room_list[i].equals(api.context().currentRoom().getId()))
+			{
+				System.out.println("calling setData");
+				setData(url_list[i]);
+				System.out.println("calling showData");
+				showData(api, room_list[i]);
+				break;
+			}
+			else
+			{
+				continue;
+			}
+		}
+		
+	}
+	
 }

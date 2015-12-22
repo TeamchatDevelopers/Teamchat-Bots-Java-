@@ -18,7 +18,7 @@ public class Schedule implements Job {
 		webCrawler wc = (webCrawler) dataMap.get("WC");
 		try
 		{
-			wc.searchCategories(api);
+			wc.showNews(api);
 		}
 		catch (IOException e)
 		{	
