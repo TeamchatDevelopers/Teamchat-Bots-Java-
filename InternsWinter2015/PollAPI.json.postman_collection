@@ -1,0 +1,186 @@
+{
+	"id": "b64bd9b0-dbc6-cef7-b498-6240e92f2739",
+	"name": "PollAPI",
+	"description": "",
+	"order": [
+		"17f585ca-bf63-7358-d477-f4dddf69f87b",
+		"89fc66c1-12e4-923d-8968-a2eb68c79c54",
+		"34245606-a8ec-3512-e835-535f0cb4c448",
+		"5e16a7b9-c160-8564-de2b-5d2c4e078aa4",
+		"ddd33061-8cb5-0115-5bbc-d31443d4572a"
+	],
+	"folders": [],
+	"timestamp": 1450952486946,
+	"owner": 0,
+	"remoteLink": "",
+	"public": false,
+	"requests": [
+		{
+			"id": "17f585ca-bf63-7358-d477-f4dddf69f87b",
+			"headers": "apikey: f9191e5c7d344ef6ce7a1316468b496e\n",
+			"url": "http://interns.teamchat.com:8080/PollService/SendToSlack",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "POST",
+			"data": [
+				{
+					"key": "smid",
+					"value": "566",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "recipients",
+					"value": "vishalmeena,himanshu,suman",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1450952446748,
+			"name": "SendToSlack",
+			"description": "",
+			"collectionId": "b64bd9b0-dbc6-cef7-b498-6240e92f2739",
+			"responses": []
+		},
+		{
+			"id": "34245606-a8ec-3512-e835-535f0cb4c448",
+			"headers": "apikey: f9191e5c7d344ef6ce7a1316468b496e\n",
+			"url": "http://interns.teamchat.com:8080/PollService/GetReplies",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "POST",
+			"data": [
+				{
+					"key": "smid",
+					"value": "566",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1450952467184,
+			"name": "GetReplies",
+			"description": "",
+			"collectionId": "b64bd9b0-dbc6-cef7-b498-6240e92f2739",
+			"responses": []
+		},
+		{
+			"id": "5e16a7b9-c160-8564-de2b-5d2c4e078aa4",
+			"headers": "apikey: f9191e5c7d344ef6ce7a1316468b496e\n",
+			"url": "http://interns.teamchat.com:8080/PollService/SendToTwitter",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "POST",
+			"data": [
+				{
+					"key": "smid",
+					"value": "566",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "recipients",
+					"value": "vishal4meena,SumanSwaroop7",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1450952426143,
+			"name": "SendToTwitter",
+			"description": "",
+			"collectionId": "b64bd9b0-dbc6-cef7-b498-6240e92f2739",
+			"responses": []
+		},
+		{
+			"id": "89fc66c1-12e4-923d-8968-a2eb68c79c54",
+			"headers": "apikey: f9191e5c7d344ef6ce7a1316468b496e\n",
+			"url": "http://interns.teamchat.com:8080/PollService/GetPoll",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "POST",
+			"data": [
+				{
+					"key": "question",
+					"value": "multichannel poll 3",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1450952391015,
+			"name": "GetPoll",
+			"description": "",
+			"collectionId": "b64bd9b0-dbc6-cef7-b498-6240e92f2739",
+			"responses": []
+		},
+		{
+			"id": "ddd33061-8cb5-0115-5bbc-d31443d4572a",
+			"headers": "apikey: f9191e5c7d344ef6ce7a1316468b496e\n",
+			"url": "http://interns.teamchat.com:8080/PollService/SendPoll",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "POST",
+			"collectionId": "b64bd9b0-dbc6-cef7-b498-6240e92f2739",
+			"data": [
+				{
+					"key": "question",
+					"value": "sample question",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "twitterRecipients",
+					"value": "vishal4meena,SumanSwaroop7",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "slackRecipients",
+					"value": "vishalmeena,himanshu,vishal42,suman",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "emailRecipients",
+					"value": null,
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "smsRecipients",
+					"value": null,
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"name": "SendPoll",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1450957017495,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		}
+	]
+}
