@@ -79,34 +79,12 @@ public class webCrawler {
 		datestr = detailedDate.substring(0, (len - 12));
 		timestr = detailedDate.substring((len - 12));
 
-		mystr =  properties.getProperty("styleString")
-				+ "   <body>  " 
-				+ "       <div class='story'>  " 
-				+ "           <div class='storyTitle'>  "
-				+ "               <h5 class='theTitle'>  " 
-				+ "                   <a href='" 
-				+ links.elementAt(i)
-				+ "' title='Click here to read the whole story' target='_blank'>  " 
-				+ storyTitles.elementAt(i)
-				+ "                   </a>  " 
-				+ "               </h5>  " 
-				+ "           </div>  "
-				+ "           <div class='date'>  " 
-				+ "               <p class='datePara' title=' at " 
-				+ timestr
-				+ " '>  " 
-				+ "                   <i>" 
-				+ datestr 
-				+ "</i>  " 
-				+ "               </p>  "
-				+ "           </div>  " 
-				+ "           <div class='descr'>  "
-				+ "               <p class='description'>  " 
-				+ storyDescriptions.elementAt(i) 
-				+ "               </p>  "
-				+ "           </div>  " 
-				+ "       </div>  " 
-				+ "  </body>  ";
+		mystr =  properties.getProperty("styleString");
+		mystr = mystr.replace("_element1", links.elementAt(i));
+		mystr = mystr.replace("_element2", storyTitles.elementAt(i));
+		mystr = mystr.replace("_element3", timestr);
+		mystr = mystr.replace("_element4", datestr);
+		mystr = mystr.replace("_element5", storyDescriptions.elementAt(i));
 		return mystr;
 	}
 
