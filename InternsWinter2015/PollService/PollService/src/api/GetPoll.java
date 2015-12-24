@@ -28,39 +28,19 @@ public class GetPoll extends HttpServlet {
 	 */
 	public GetPoll() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-
-		System.out.println("inside get");
-		
-		String question = request.getParameter("question");
-		String apikey = request.getHeader("apikey");
-
-		String resp="";
-		
-		try {
-			resp = getSMID(question,apikey);
-		} catch (JSONException e) {
-			System.err.println("Error in call to smapi create poll");
-			e.printStackTrace();
-		}
-		
-		response.getWriter().append(resp);
+		doPost(request,response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		
-		System.out.println("inside post");
 		
 		String question = request.getParameter("question");
 		String apikey = request.getHeader("apikey");

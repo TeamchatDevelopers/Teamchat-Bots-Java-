@@ -22,63 +22,35 @@ import com.squareup.okhttp.Response;
 /**
  * Servlet implementation class SendToSlack
  */
-@WebServlet("/SendToTwitter")
-public class SendToTwitter extends HttpServlet {
+@WebServlet("/SendToSlack")
+public class SendToSlack extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public SendToTwitter() {
+    public SendToSlack() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		
-		String apikey = request.getHeader("apikey");
-		String recipients = request.getParameter("recipients");
-		String smid = request.getParameter("smid");
-		
-		recipients = recipients.trim();
-		String[] users = recipients.split(" ");
-		
-		String signed_link = new String();
-		
-		for(String user : users)
-		{
-			try {
-				signed_link = getSignedLink(user,smid,apikey);
-			} catch (JSONException e) {
-				System.err.println("Error in call to SMapi get signed link");
-				e.printStackTrace();
-			}
-			
-			sendOneTwitterPoll(signed_link,user,apikey);
-			
-			
-		}
-		
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
+		doPost(request,response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		System.out.println("inside post");
-		
+				
 		String apikey = request.getHeader("apikey");
 		String recipients = request.getParameter("recipients");
 		String smid = request.getParameter("smid");
 		
 		recipients = recipients.trim();
-		String[] users = recipients.split(" ");
+		String[] users = recipients.split(",");
 		
 		String signed_link = new String();
 		
@@ -91,9 +63,7 @@ public class SendToTwitter extends HttpServlet {
 				e.printStackTrace();
 			}
 			
-			sendOneTwitterPoll(signed_link,user,apikey);
-			
-			
+			sendOneSlackPoll(signed_link,user,"Poll Bot",apikey);
 		}
 	}
 	
@@ -118,22 +88,22 @@ public class SendToTwitter extends HttpServlet {
 		JSONArray jArray = new JSONArray(jsonString);
 		JSONObject poll = jArray.getJSONObject(0);
 		String id = poll.getString("id");
-		System.err.println(id);
+		//System.err.println(id);
 		String link = "http://dev-smapi.webaroo.com/SMApi/api/embed/"+id;
 		return link;
 	}
 	
-	public void sendOneTwitterPoll(String poll_link, String user, String apikey) throws IOException
+	public void sendOneSlackPoll(String poll_link, String user, String botName, String apikey) throws IOException
 	{
 		MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
 		OkHttpClient client = new OkHttpClient();
 
 		String body_str = "destination="+user+"&text=Please take this poll : "
-		+URLEncoder.encode(poll_link, "UTF-8");
+		+URLEncoder.encode(poll_link, "UTF-8")+"&name="+botName;
 		
 		RequestBody body = RequestBody.create(mediaType, body_str);
 		Request request = new Request.Builder()
-				.url("http://dev-api.webaroo.com/SMApi/api/twitter/msg")
+				.url("http://dev-api.webaroo.com/SMApi/api/slack/msg")
 				.put(body)
 				.addHeader("apikey", apikey)
 				.addHeader("cache-control", "no-cache")
@@ -142,7 +112,5 @@ public class SendToTwitter extends HttpServlet {
 
 		client.newCall(request).execute();
 	}
-	
-	
 
 }
