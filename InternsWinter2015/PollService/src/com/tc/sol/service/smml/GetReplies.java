@@ -1,4 +1,4 @@
-package api;
+package com.tc.sol.service.smml;
 
 import java.io.IOException;
 import javax.servlet.ServletException;

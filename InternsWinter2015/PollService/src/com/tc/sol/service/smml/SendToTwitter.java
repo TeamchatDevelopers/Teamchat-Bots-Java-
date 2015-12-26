@@ -1,4 +1,4 @@
-package api;
+package com.tc.sol.service.smml;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -60,6 +60,7 @@ public class SendToTwitter extends HttpServlet {
 		{
 			try {
 				signed_link = getSignedLink(user,smid,apikey);
+				System.out.println(signed_link);
 			} catch (JSONException e) {
 				System.err.println("Error in call to SMapi get signed link");
 				e.printStackTrace();
