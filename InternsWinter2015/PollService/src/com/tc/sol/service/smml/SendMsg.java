@@ -1,6 +1,7 @@
 package com.tc.sol.service.smml;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,18 +16,19 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
+import com.tc.sol.service.smml.util.Utility.KEYWORDS;
 
 /**
  * Servlet implementation class SendPoll
  */
-@WebServlet("/SendPoll")
-public class SendPoll extends HttpServlet {
+@WebServlet("/sendMsg")
+public class SendMsg extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public SendPoll() {
+    public SendMsg() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -44,29 +46,17 @@ public class SendPoll extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String apikey = request.getHeader("apikey");
-		String question = request.getParameter("question");
-		
-		String messageType = request.getParameter("messageType");
-		
-		String twitterRecipients = request.getParameter("twitterRecipients");
-		String twitterConsumerkey = request.getParameter("twitterConsumerkey");
-		String twitterConsumerSecret = request.getParameter("twitterConsumerSecret");
-		String twitterAccessToken = request.getParameter("twitterAccessToken");
-		String twitterAccessTokenSecret = request.getParameter("twitterAccessTokenSecret");
-		
-		String slackRecipients = request.getParameter("slackRecipients");
-		String slackToken = request.getParameter("slackToken");
-		
-		String emailRecipients = request.getParameter("emailRecipients");
-		String smsRecipients = request.getParameter("smsRecipients");
+		String apikey = request.getHeader(KEYWORDS.API_KEY);
+		String bannerText = request.getParameter(KEYWORDS.BANNER_TEXT);		
+		String messageType = request.getParameter(KEYWORDS.MESSAGE_TYPE);
+		String messageDesc = request.getParameter(KEYWORDS.MESSAGE_DESC);
 		
 		String smId = null;
 		
-		if (messageType != null && messageType.equalsIgnoreCase("poll")) {
+		if (messageType != null && messageType.equalsIgnoreCase(KEYWORDS.POLL)) {
 			try
 			{
-				smId = getPoll(question,apikey);
+				smId = getPoll(bannerText,apikey);
 			} catch (JSONException e)
 			{
 				// TODO Auto-generated catch block
@@ -74,22 +64,26 @@ public class SendPoll extends HttpServlet {
 			}
 		}
 		
-		if(twitterRecipients != null && smId != null)
+		if(smId != null)
 		{
-			sendToTwitter(smId,apikey,twitterRecipients,twitterConsumerkey,twitterConsumerSecret,twitterAccessToken,twitterAccessTokenSecret);
+			String twitterCredentials = request.getParameter(KEYWORDS.TWITTER_CREDS);
+			if (twitterCredentials != null)
+				SendToTwitter.sendToTwitter(smId,apikey,twitterCredentials,messageDesc);
+			
+			
 		}
 		
-		if(slackRecipients != null && smId != null)
+		if(slackRecipients != null)
 		{
 			sendToSlack(smId, apikey, slackRecipients, slackToken);
 		}
 		
-		if(emailRecipients != null && smId != null)
+		if(emailRecipients != null)
 		{
 			sendToEmail(smId, apikey, emailRecipients);
 		}
 	
-		if(smsRecipients != null && smId != null)
+		if(smsRecipients != null)
 		{
 			sendToSMS(smId, apikey, smsRecipients);
 		}
@@ -106,7 +100,7 @@ public class SendPoll extends HttpServlet {
 		MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
 		RequestBody body = RequestBody.create(mediaType, "question="+question);
 		Request request = new Request.Builder()
-		  .url("http://localhost:8080/PollService/GetPoll")
+		  .url("http://stag-solutions.teamchat.com/SmartMessageService/GetPoll")
 		  .post(body)
 		  .addHeader("apikey", apikey)
 		  .addHeader("cache-control", "no-cache")
@@ -124,53 +118,7 @@ public class SendPoll extends HttpServlet {
 		return id;
 	}
 	
-	public void sendToTwitter(String smId,String apiKey,String recipients
-			,String twitterConsumerkey, String twitterConsumerSecret, 
-			String twitterAccessToken, String twitterAccessTokenSecret) throws IOException
-	{
-		saveTwitterAccount(apiKey, twitterConsumerkey, twitterConsumerSecret, 
-				twitterAccessToken, twitterAccessTokenSecret);
-		sendMessageOnTwitter(apiKey, smId, recipients);
-	}
 	
-	private void saveTwitterAccount(String apiKey,String twitterConsumerkey, String twitterConsumerSecret, 
-			String twitterAccessToken, String twitterAccessTokenSecret) throws IOException
-	{
-		OkHttpClient client = new OkHttpClient();
-
-		MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
-		RequestBody body = RequestBody.create(mediaType, "consumerkey="+twitterConsumerkey+"&consumerSecret="+twitterConsumerSecret
-				+"&accessToken="+twitterAccessToken+"&accessTokenSecret="+twitterAccessTokenSecret);
-		Request request = new Request.Builder()
-		  .url("http://dev-api.webaroo.com/SMApi/api/twitter/account")
-		  .put(body)
-		  .addHeader("apikey", apiKey)
-		  .addHeader("cache-control", "no-cache")
-		  .addHeader("content-type", "application/x-www-form-urlencoded")
-		  .build();
-
-		client.newCall(request).execute();
-		
-	}
-
-	private void sendMessageOnTwitter(String apiKey, String smId, String recipients) throws IOException
-	{
-		OkHttpClient client = new OkHttpClient();
-
-		MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
-		RequestBody body = RequestBody.create(mediaType, "smid="+smId+"&recipients="+recipients);
-		Request request = new Request.Builder()
-		  .url("http://localhost:8080/PollService/SendToTwitter")
-		  .post(body)
-		  .addHeader("apikey", apiKey)
-		  .addHeader("cache-control", "no-cache")
-		  .addHeader("content-type", "application/x-www-form-urlencoded")
-		  .build();
-
-		client.newCall(request).execute();
-
-		
-	}
 
 	public void sendToSlack(String smId,String apiKey,String recipients, String slackToken) throws IOException
 	{
@@ -202,7 +150,7 @@ public class SendPoll extends HttpServlet {
 		MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
 		RequestBody body = RequestBody.create(mediaType, "smid="+smId+"&recipients="+recipients);
 		Request request = new Request.Builder()
-		  .url("http://localhost:8080/PollService/SendToSlack")
+		  .url("http://stag-solutions.teamchat.com/SmartMessageService/SendToSlack")
 		  .post(body)
 		  .addHeader("apikey", apiKey)
 		  .addHeader("cache-control", "no-cache")

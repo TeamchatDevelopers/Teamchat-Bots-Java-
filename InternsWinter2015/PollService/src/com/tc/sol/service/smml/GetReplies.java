@@ -17,7 +17,7 @@ import com.squareup.okhttp.Response;
 /**
  * Servlet implementation class GetReplies
  */
-@WebServlet("/GetReplies")
+@WebServlet("/getReplies")
 public class GetReplies extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

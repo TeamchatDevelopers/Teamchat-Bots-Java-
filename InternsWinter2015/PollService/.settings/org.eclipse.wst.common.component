@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-    <wb-module deploy-name="PollService">
+    <wb-module deploy-name="SmartMessageService">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <property name="context-root" value="PollService"/>
-        <property name="java-output-path" value="/PollService/build/classes"/>
+        <property name="java-output-path" value="/SmartMessageService/build/classes"/>
+        <property name="context-root" value="SmartMessageService"/>
     </wb-module>
 </project-modules>
