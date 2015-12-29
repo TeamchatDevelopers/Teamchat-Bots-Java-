@@ -42,7 +42,7 @@ public class Utility
 
 		RequestBody body = RequestBody.create(mediaType, KEYWORDS.DESTINATION+"="+name);
 		Request request = new Request.Builder()
-				.url(config.getProperty(KEYWORDS.GET_SIGNED_LINK_URL.replace("_"+KEYWORDS.SM_ID, smId)))
+				.url(config.getProperty(KEYWORDS.GET_SIGNED_LINK_URL).replace("_"+KEYWORDS.SM_ID, smId))
 				.post(body)
 				.addHeader(KEYWORDS.API_KEY, apikey)
 				.addHeader("cache-control", "no-cache")
@@ -68,7 +68,7 @@ public class Utility
 		public static final String MESSAGE_DESC = "msgDesc";
 		public static final String BANNER_TEXT = "bannerText";
 		public static final String API_KEY = "apikey";
-		public static final String SM_ID = "smId";
+		public static final String SM_ID = "smid";
 		public static final String PAYLOAD = "payload";
 		public static final String CONTENT = "content";
 		

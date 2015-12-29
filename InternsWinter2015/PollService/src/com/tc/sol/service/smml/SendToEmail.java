@@ -46,7 +46,7 @@ public class SendToEmail {
 	{
 		JSONObject emailCreds = new JSONObject(emailCredentials);
 		String recipients = emailCreds.getString(KEYWORDS.RECIPIENTS);
-		String name = emailCreds.getString(KEYWORDS.SOURCE);
+		String name = emailCreds.getString(KEYWORDS.NAME);
 		String subject = emailCreds.getString(KEYWORDS.SUBJECT);
 		
 		recipients = recipients.trim();
@@ -74,7 +74,7 @@ public class SendToEmail {
 		MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
 		OkHttpClient client = new OkHttpClient();
 
-		String body_str = KEYWORDS.DESTINATION+"="+user+"&"+KEYWORDS.TEXT+"="+messageDesc
+		String body_str = KEYWORDS.DESTINATION+"="+user+"&"+KEYWORDS.TEXT+"="+messageDesc+"  "
 		+URLEncoder.encode(poll_link, "UTF-8")+"&"+KEYWORDS.NAME+"="+name+"&"+KEYWORDS.SUBJECT+"="+subject;
 		
 		RequestBody body = RequestBody.create(mediaType, body_str);

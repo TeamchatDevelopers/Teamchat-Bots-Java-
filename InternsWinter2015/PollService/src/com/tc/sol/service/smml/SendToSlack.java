@@ -39,7 +39,6 @@ public class SendToSlack {
 		  .url(Utility.config.getProperty(KEYWORDS.SLACK_ACC_URL))
 		  .put(body)
 		  .addHeader(KEYWORDS.API_KEY, apiKey)
-		  .addHeader("cache-control", "no-cache")
 		  .addHeader("content-type", "application/x-www-form-urlencoded")
 		  .build();
 
@@ -76,7 +75,7 @@ public class SendToSlack {
 		MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
 		OkHttpClient client = new OkHttpClient();
 
-		String body_str = KEYWORDS.DESTINATION+"="+KEYWORDS.USER+"&"+KEYWORDS.TEXT+"="+msgDesc
+		String body_str = KEYWORDS.DESTINATION+"="+user+"&"+KEYWORDS.TEXT+"="+msgDesc+"  "
 		+URLEncoder.encode(poll_link, "UTF-8")+"&"+KEYWORDS.NAME+"="+botName;
 		
 		RequestBody body = RequestBody.create(mediaType, body_str);
@@ -84,7 +83,6 @@ public class SendToSlack {
 				.url(Utility.config.getProperty(KEYWORDS.SLACK_SEND_MSG_URL))
 				.put(body)
 				.addHeader(KEYWORDS.API_KEY, apikey)
-				.addHeader("cache-control", "no-cache")
 				.addHeader("content-type", "application/x-www-form-urlencoded")
 				.build();
 

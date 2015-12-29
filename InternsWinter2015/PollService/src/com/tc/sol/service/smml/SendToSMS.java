@@ -73,7 +73,7 @@ public class SendToSMS {
 		MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
 		OkHttpClient client = new OkHttpClient();
 
-		String body_str = KEYWORDS.DESTINATION+"="+user+"&"+KEYWORDS.TEXT+"="+messageDesc
+		String body_str = KEYWORDS.DESTINATION+"="+user+"&"+KEYWORDS.TEXT+"="+messageDesc+"  "
 		+URLEncoder.encode(poll_link, "UTF-8")+"&"+KEYWORDS.SOURCE+"="+source;
 		
 		RequestBody body = RequestBody.create(mediaType, body_str);

@@ -47,12 +47,11 @@ public class GetReplies extends HttpServlet {
 		String smid = request.getParameter(KEYWORDS.SM_ID);
 
 		OkHttpClient client = new OkHttpClient();
-
+		
 		Request request1 = new Request.Builder()
-				.url(Utility.config.getProperty(KEYWORDS.GET_MSG_DETAILS_URL)+smid)
+				.url((Utility.config.getProperty(KEYWORDS.GET_MSG_DETAILS_URL))+smid)
 				.get()
 				.addHeader(KEYWORDS.API_KEY, apikey)
-				.addHeader("cache-control", "no-cache")
 				.build();
 
 		Response response1 = client.newCall(request1).execute();
@@ -78,7 +77,7 @@ public class GetReplies extends HttpServlet {
 		OkHttpClient client2 = new OkHttpClient();
 
 		Request request2 = new Request.Builder()
-		  .url(Utility.config.getProperty(KEYWORDS.GET_REPLIES_URL).replace(KEYWORDS.SM_ID, smid).replace(KEYWORDS.API_KEY, apikey))
+		  .url(Utility.config.getProperty(KEYWORDS.GET_REPLIES_URL).replace("_"+KEYWORDS.SM_ID, smid).replace("_"+KEYWORDS.API_KEY, apikey))
 		  .get()
 		  .addHeader("cache-control", "no-cache")
 		  .build();

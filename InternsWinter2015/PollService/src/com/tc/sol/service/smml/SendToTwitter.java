@@ -46,7 +46,6 @@ public class SendToTwitter {
 		  .url(Utility.config.getProperty(KEYWORDS.TWITTER_ACC_URL))
 		  .put(body)
 		  .addHeader(KEYWORDS.API_KEY, apiKey)
-		  .addHeader("cache-control", "no-cache")
 		  .addHeader("content-type", "application/x-www-form-urlencoded")
 		  .build();
 
@@ -84,7 +83,7 @@ public class SendToTwitter {
 		MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
 		OkHttpClient client = new OkHttpClient();
 
-		String body_str = KEYWORDS.DESTINATION+"="+user+"&"+KEYWORDS.TEXT+"="+messageDesc
+		String body_str = KEYWORDS.DESTINATION+"="+user+"&"+KEYWORDS.TEXT+"="+messageDesc+"  "
 		+URLEncoder.encode(poll_link, "UTF-8");
 		
 		RequestBody body = RequestBody.create(mediaType, body_str);
@@ -92,7 +91,6 @@ public class SendToTwitter {
 				.url(Utility.config.getProperty(KEYWORDS.TWITTER_SEND_MSG_URL))
 				.put(body)
 				.addHeader(KEYWORDS.API_KEY, apikey)
-				.addHeader("cache-control", "no-cache")
 				.addHeader("content-type", "application/x-www-form-urlencoded")
 				.build();
 
