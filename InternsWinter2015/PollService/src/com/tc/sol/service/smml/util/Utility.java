@@ -69,6 +69,8 @@ public class Utility
 		public static final String BANNER_TEXT = "bannerText";
 		public static final String API_KEY = "apikey";
 		public static final String SM_ID = "smId";
+		public static final String PAYLOAD = "payload";
+		public static final String CONTENT = "content";
 		
 		public static final String ID = "id";
 		public static final String POLL = "poll";
@@ -122,6 +124,9 @@ public class Utility
 		public static final String MSG_TYPE_NOT_FOUND = "Message Type not found";
 		public static final String DESC = "description";
 		public static final String MESSAGE_SEND_SUCESS = "Message sent successfully";
+		
+		public static final String GET_MSG_DETAILS_URL = "getMsgDetailsUrl";
+		public static final String GET_REPLIES_URL = "getRepliesUrl";
 	}
 	
 	public static Properties loadPropertyFromClasspath(String fileName, Class<?> type) throws IOException

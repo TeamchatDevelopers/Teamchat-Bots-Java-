@@ -1,6 +1,7 @@
 package com.tc.sol.service.smml;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,6 +14,8 @@ import org.json.JSONObject;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
+import com.tc.sol.service.smml.util.Utility;
+import com.tc.sol.service.smml.util.Utility.KEYWORDS;
 
 /**
  * Servlet implementation class GetReplies
@@ -40,29 +43,30 @@ public class GetReplies extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		String apikey = request.getHeader("apikey");
-		String smid = request.getParameter("smid");
+		String apikey = request.getHeader(KEYWORDS.API_KEY);
+		String smid = request.getParameter(KEYWORDS.SM_ID);
 
 		OkHttpClient client = new OkHttpClient();
 
 		Request request1 = new Request.Builder()
-				.url("http://dev-api.webaroo.com/SMApi/api/smartmsg/msg/"+smid)
+				.url(Utility.config.getProperty(KEYWORDS.GET_MSG_DETAILS_URL)+smid)
 				.get()
-				.addHeader("apikey", apikey)
+				.addHeader(KEYWORDS.API_KEY, apikey)
 				.addHeader("cache-control", "no-cache")
 				.build();
 
 		Response response1 = client.newCall(request1).execute();
 		
-		JSONObject poll;JSONObject payload;
+		JSONObject poll;
+		JSONObject payload;
 		String question = new String();
 		String jsonString = response1.body().string();
 
 		
 		try {
 			poll = new JSONObject(jsonString);
-			payload = poll.getJSONObject("payload");
-			question = payload.getString("content");
+			payload = poll.getJSONObject(KEYWORDS.PAYLOAD);
+			question = payload.getString(KEYWORDS.CONTENT);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -74,7 +78,7 @@ public class GetReplies extends HttpServlet {
 		OkHttpClient client2 = new OkHttpClient();
 
 		Request request2 = new Request.Builder()
-		  .url("http://dev-api.webaroo.com/SMApi/api/smartmsg/msg/"+smid+"/replies?apikey="+apikey)
+		  .url(Utility.config.getProperty(KEYWORDS.GET_REPLIES_URL).replace(KEYWORDS.SM_ID, smid).replace(KEYWORDS.API_KEY, apikey))
 		  .get()
 		  .addHeader("cache-control", "no-cache")
 		  .build();
