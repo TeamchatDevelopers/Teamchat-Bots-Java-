@@ -1,11 +1,16 @@
 package com.tc.sol.service.smml;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -45,19 +50,20 @@ public class SendToEmail {
 	private static void getSignedLinkAndSend(String apiKey, String smId, String emailCredentials, String messageDesc) throws Exception
 	{
 		JSONObject emailCreds = new JSONObject(emailCredentials);
-		String recipients = emailCreds.getString(KEYWORDS.RECIPIENTS);
 		String name = emailCreds.getString(KEYWORDS.NAME);
 		String subject = emailCreds.getString(KEYWORDS.SUBJECT);
 		
-		recipients = recipients.trim();
-		String[] users = recipients.split(",");
+		JSONArray recipientsArray = emailCreds.getJSONArray(KEYWORDS.RECIPIENTS);
+		String json = recipientsArray.toString();
+		Type collectionType = new TypeToken<ArrayList<String>>(){}.getType();
+		ArrayList<String> recipients = new Gson().fromJson(json, collectionType);
 		
 		String signed_link = new String();
 		
-		for(String user : users)
+		for(String user : recipients)
 		{
 			try {
-				signed_link = Utility.getSignedLink(user,smId,apiKey);
+				signed_link = Utility.getSignedLink(user.trim(),smId,apiKey);
 				System.out.println(signed_link);
 			} catch (JSONException e) {
 				System.err.println("Error in call to SMapi get signed link");

@@ -1,12 +1,18 @@
 package com.tc.sol.service.smml;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpServlet;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -56,17 +62,18 @@ public class SendToTwitter {
 	private static void getSignedLinkAndSend(String apiKey, String smId, String twitterCredentials, String messageDesc) throws Exception
 	{
 		JSONObject twitterCreds = new JSONObject(twitterCredentials);
-		String recipients = twitterCreds.getString(KEYWORDS.RECIPIENTS);
-		
-		recipients = recipients.trim();
-		String[] users = recipients.split(",");
+
+		JSONArray recipientsArray = twitterCreds.getJSONArray(KEYWORDS.RECIPIENTS);
+		String json = recipientsArray.toString();
+		Type collectionType = new TypeToken<ArrayList<String>>(){}.getType();
+		ArrayList<String> recipients = new Gson().fromJson(json, collectionType);
 		
 		String signed_link = new String();
 		
-		for(String user : users)
+		for(String user : recipients)
 		{
 			try {
-				signed_link = Utility.getSignedLink(user,smId,apiKey);
+				signed_link = Utility.getSignedLink(user.trim(),smId,apiKey);
 				System.out.println(signed_link);
 			} catch (JSONException e) {
 				System.err.println("Error in call to SMapi get signed link");
