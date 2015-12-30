@@ -46,7 +46,7 @@ public class SendMsg extends HttpServlet
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		// TODO Auto-generated method stub
-		String apikey = request.getHeader(KEYWORDS.API_KEY);
+		String apikey = request.getHeader(KEYWORDS.SM_SERVICE_API_KEY);
 		String question = request.getParameter(KEYWORDS.QUESTION);
 		String messageType = request.getParameter(KEYWORDS.MESSAGE_TYPE);
 		String messageDesc = request.getParameter(KEYWORDS.MESSAGE_DESC);

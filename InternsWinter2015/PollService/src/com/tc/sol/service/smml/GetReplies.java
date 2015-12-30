@@ -43,11 +43,11 @@ public class GetReplies extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		String apikey = request.getHeader(KEYWORDS.API_KEY);
-		String smid = request.getParameter(KEYWORDS.SM_ID);
+		String apikey = request.getHeader(KEYWORDS.SM_SERVICE_API_KEY);
+		String smid = request.getParameter(KEYWORDS.SM_SERVICE_SM_ID);
 
 		OkHttpClient client = new OkHttpClient();
-		
+
 		Request request1 = new Request.Builder()
 				.url((Utility.config.getProperty(KEYWORDS.GET_MSG_DETAILS_URL))+smid)
 				.get()
@@ -55,13 +55,13 @@ public class GetReplies extends HttpServlet {
 				.build();
 
 		Response response1 = client.newCall(request1).execute();
-		
+
 		JSONObject poll;
 		JSONObject payload;
 		String question = new String();
 		String jsonString = response1.body().string();
 
-		
+
 		try {
 			poll = new JSONObject(jsonString);
 			payload = poll.getJSONObject(KEYWORDS.PAYLOAD);
@@ -69,23 +69,23 @@ public class GetReplies extends HttpServlet {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-			
+
 		response.getWriter().flush();
 		response.getWriter().append("Question : " );
 		response.getWriter().append(question);
-		
+
 		OkHttpClient client2 = new OkHttpClient();
 
 		Request request2 = new Request.Builder()
-		  .url(Utility.config.getProperty(KEYWORDS.GET_REPLIES_URL).replace("_"+KEYWORDS.SM_ID, smid).replace("_"+KEYWORDS.API_KEY, apikey))
-		  .get()
-		  .addHeader("cache-control", "no-cache")
-		  .build();
+				.url(Utility.config.getProperty(KEYWORDS.GET_REPLIES_URL).replace("_"+KEYWORDS.SM_ID, smid).replace("_"+KEYWORDS.API_KEY, apikey))
+				.get()
+				.addHeader("cache-control", "no-cache")
+				.build();
 
 		Response response2 = client2.newCall(request2).execute();
-		
+
 		String replies = response2.body().string();
-		
+
 		response.getWriter().append(replies);
 
 	}
