@@ -43,9 +43,8 @@ public class FormCallback extends HttpServlet {
 		// TODO Auto-generated method stub
 
 		String payload = request.getParameter("payload");
-		
-		System.out.println(payload);
-		
+		String type = request.getParameter("type");		
+				
 		JSONObject jPayload  = null;
 		
 		
@@ -94,7 +93,7 @@ public class FormCallback extends HttpServlet {
 			e.printStackTrace();
 		}
 	
-		Report.insertInReportMap(email, "plan", value);
+		Report.insertInReportMap(email, type, value);
 	}
 
 	/**

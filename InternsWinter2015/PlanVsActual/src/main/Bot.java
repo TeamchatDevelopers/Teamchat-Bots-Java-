@@ -50,8 +50,7 @@ public class Bot extends HttpServlet {
 		String groupId = request.getParameter("groupId");
 
 		final String fields = "[   {     'type': 'input',     'label': 'Amount',     'key': 'amount'   }]";
-		final String callbackUrlPlan = "http://localhost:8080/PlanVsActual/FormCallback";
-		final String callbackUrlActual = "http://localhost:8080/PlanVsActual/FormActualCallback";
+		String callbackUrl = "http://interns.teamchat.com:8080/PlanVsActual/FormCallback";
 		final String html = null;
 		final String commentsEnabled = "true";
 		final String detailsEnabled = "true";
@@ -60,13 +59,13 @@ public class Bot extends HttpServlet {
 		if(action.equalsIgnoreCase("plan"))
 		{
 			String text = "Please enter your sales plan for today";
-			hitGroupSendForm(apiKey, groupId, text, callbackUrlPlan, html, commentsEnabled, detailsEnabled, fields);
+			hitGroupSendForm(apiKey, groupId, text, callbackUrl+"?type=plan", html, commentsEnabled, detailsEnabled, fields);
 		}
 
 		if(action.equalsIgnoreCase("actual"))
 		{
 			String text = "Please enter your Actual Sales for today";
-			hitGroupSendForm(apiKey, groupId, text, callbackUrlActual, html, commentsEnabled, detailsEnabled, fields);
+			hitGroupSendForm(apiKey, groupId, text, callbackUrl+"?type=actual", html, commentsEnabled, detailsEnabled, fields);
 		}
 
 		if(action.equalsIgnoreCase("report"))
