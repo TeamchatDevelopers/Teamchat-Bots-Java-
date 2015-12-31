@@ -23,7 +23,7 @@ public class Planner_Bot
 	static final String TABLE_NAME = "timedata";
 
 	static final String USER = "root";
-	static final String PASS = "12lokvahkoor12";
+	static final String PASS = "pass";
 
 	public String plan_name;
 	public Integer sHour, sMinute, eHour, eMinute, intInMin , noOfInt, noOfDays, day, year;
