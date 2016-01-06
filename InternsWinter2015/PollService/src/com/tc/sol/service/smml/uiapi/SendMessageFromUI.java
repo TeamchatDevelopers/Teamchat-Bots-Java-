@@ -2,9 +2,9 @@ package com.tc.sol.service.smml.uiapi;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,7 +18,7 @@ import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
-import com.tc.sol.service.smml.util.Utility;
+import com.squareup.okhttp.Response;
 import com.tc.sol.service.smml.util.Utility.KEYWORDS;
 
 /**
@@ -52,13 +52,21 @@ public class SendMessageFromUI extends HttpServlet {
 				writer.close();
 			}
 			
+			String smId = request.getParameter(KEYWORDS.SM_SERVICE_API_KEY);
+			if (smId != null && !smId.equalsIgnoreCase("")) {
+				
+				
+				
+				return;
+			}
+			
 			String apiKey = request.getParameter(KEYWORDS.SM_SERVICE_API_KEY);
 			String msgType = request.getParameter(KEYWORDS.MESSAGE_TYPE);
 			String question = request.getParameter(KEYWORDS.QUESTION);
 			String msgDesc = request.getParameter(KEYWORDS.MESSAGE_DESC);
 			
 			JSONObject twitterCreds = new JSONObject();
-			twitterCreds.put(KEYWORDS.CONSUMER_KEY, request.getParameter("twitterconsumerKey"));
+			twitterCreds.put(KEYWORDS.SM_SERVICE_TWITTER_CONSUMER_KEY, request.getParameter("twitterconsumerKey"));
 			twitterCreds.put(KEYWORDS.CONSUMER_SECRET, request.getParameter("twitterconsumerSecret"));
 			twitterCreds.put(KEYWORDS.ACCESS_TOKEN, request.getParameter("twitteraccessToken"));
 			twitterCreds.put(KEYWORDS.ACCESS_TOKEN_SECRET, request.getParameter("twitteraccessTokenSecret"));
@@ -69,13 +77,13 @@ public class SendMessageFromUI extends HttpServlet {
 			slackCreds.put(KEYWORDS.RECIPIENTS, new ArrayList<String>(Arrays.asList(request.getParameter("slackrecipients").split(","))));
 			
 			JSONObject smsCreds = new JSONObject();
-			smsCreds.put(KEYWORDS.ACCOUNT_ID, request.getParameter("smsaccountId"));
+			smsCreds.put(KEYWORDS.SM_SERVICE_ACCOUNT_ID, request.getParameter("smsaccountId"));
 			smsCreds.put(KEYWORDS.PASSWORD, request.getParameter("smspassword"));
 			smsCreds.put(KEYWORDS.SOURCE, request.getParameter("smssource"));
 			smsCreds.put(KEYWORDS.RECIPIENTS, new ArrayList<String>(Arrays.asList(request.getParameter("smsrecipients").split(","))));
 			
 			JSONObject emailCreds = new JSONObject();
-			emailCreds.put(KEYWORDS.ACCOUNT_ID, request.getParameter("smsaccountId"));
+			emailCreds.put(KEYWORDS.SM_SERVICE_ACCOUNT_ID, request.getParameter("smsaccountId"));
 			emailCreds.put(KEYWORDS.PASSWORD, request.getParameter("smspassword"));
 			emailCreds.put(KEYWORDS.NAME, request.getParameter("emailname"));
 			emailCreds.put(KEYWORDS.SUBJECT, request.getParameter("emailsubject"));
@@ -85,6 +93,8 @@ public class SendMessageFromUI extends HttpServlet {
 			
 			MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
 			OkHttpClient client = new OkHttpClient();
+			client.setConnectTimeout(15, TimeUnit.SECONDS); // connect timeout
+			client.setReadTimeout(15, TimeUnit.SECONDS);    // socket timeout
 			
 			String body_str = KEYWORDS.QUESTION+"="+question+"&"+KEYWORDS.MESSAGE_TYPE+"="+
 								msgType+"&"+KEYWORDS.MESSAGE_DESC+"="+msgDesc
@@ -102,7 +112,12 @@ public class SendMessageFromUI extends HttpServlet {
 					.addHeader("content-type", "application/x-www-form-urlencoded")
 					.build();
 
-			client.newCall(sendMsgRequest).execute();
+			Response res = client.newCall(sendMsgRequest).execute();
+			
+			System.out.println("Response message: " + res.message());
+			System.out.println("Smart Message Id: " + new JSONObject(res.body().string()).getString(KEYWORDS.SM_ID));
+			writer.write(new JSONObject(res.body().string()).getString(KEYWORDS.SM_ID));
+			res.body().close();
 			
 		} catch(Exception e) {
 			writer.write(e.getMessage());
@@ -116,7 +131,7 @@ public class SendMessageFromUI extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		doGet(request, response);
 	}
 
 }

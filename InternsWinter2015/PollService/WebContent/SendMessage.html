@@ -10,7 +10,7 @@
 
 
 
-	<FORM ACTION="call" METHOD="get">
+	<FORM ACTION="SendMessageFromUI" METHOD="get">
 		<div style="padding: 1%; color: white;">
 			Authorization Code : <input type="password" name="code"
 				value="">
@@ -98,15 +98,25 @@
 		</div>
 		
 		<div style="padding: 1%; color: white;">
-			Source : <input type="text" name="emailname" value="">
+			Name : <input type="text" name="emailname" value="">
 		</div>
 		
 		<div style="padding: 1%; color: white;">
-			Source : <input type="text" name="emailsubject" value="">
+			Subject : <input type="text" name="emailsubject" value="">
 		</div>
 		
 		<div style="padding: 1%; color: white;">
 			Recipients : <input type="text" name="emailrecipients" value="">
+		</div>
+		
+		-----------------------OR GET REPLIES--------------------------------------------------------
+		
+		<div style="padding: 1%; color: white;">
+			API Key : <input type="text" name="apiKey" value="">
+		</div>
+		
+		<div style="padding: 1%; color: white;">
+			SM ID : <input type="text" name="smid" value="">
 		</div>
 
 		<INPUT TYPE="SUBMIT" style="margin-left: 1%;" value="Submit" />
