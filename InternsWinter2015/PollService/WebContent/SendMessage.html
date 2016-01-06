@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<TITLE>Omni Channel Smart Message Engine</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#159ceb">
+	<H2 style="color: white; font-family: sans-serif;" ALIGN="CENTER">Omni
+		Channel Smart Message Engine Console Panel</H2>
+
+
+
+	<FORM ACTION="call" METHOD="get">
+		<div style="padding: 1%; color: white;">
+			Authorization Code : <input type="password" name="code"
+				value="">
+		</div>
+		
+		<div style="padding: 1%; color: white;">
+			API Key : <input type="text" name="apiKey"
+				value="">
+		</div>
+
+		<div style="padding: 1%; width: 100%; color: white;">
+			Message Type : <select name="msgType">
+				<option value="poll">Poll</option>
+				<option value="survey">Survey</option>
+				<option value="text">Text</option>
+			</select>
+		</div>
+
+		<div style="padding: 1%; color: white;">
+			Question : <input type="text" name="question" value="">
+		</div>
+		
+		<div style="padding: 1%; color: white;">
+			Description : <input type="text" name="msgDesc" value="">
+		</div>
+		
+		<br/>
+		<div style="padding: 1%; color: white; font-weight: bold;">Twitter Credentials</div>
+		<div style="padding: 1%; color: white;">
+			Consumer Key : <input type="text" name="twitterconsumerKey" value="">
+		</div>
+
+		<div style="padding: 1%; color: white;">
+			Consumer Secret : <input type="text" name="twitterconsumerSecret" value="">
+		</div>
+		
+		<div style="padding: 1%; color: white;">
+			Access Token : <input type="text" name="twitteraccessToken" value="">
+		</div>
+		
+		<div style="padding: 1%; color: white;">
+			Access Token Secret : <input type="text" name="twitteraccessTokenSecret" value="">
+		</div>
+		
+		<div style="padding: 1%; color: white;">
+			Recipients : <input type="text" name="twitterrecipients" value="">
+		</div>
+		
+		<br/>
+		<div style="padding: 1%; color: white; font-weight: bold;">Slack Credentials</div>
+		<div style="padding: 1%; color: white;">
+			Slack Token : <input type="text" name="slackToken" value="">
+		</div>
+		
+		<div style="padding: 1%; color: white;">
+			Recipients : <input type="text" name="slackrecipients" value="">
+		</div>
+		
+		<br/>
+		<div style="padding: 1%; color: white; font-weight: bold;">SMS Credentials</div>
+		<div style="padding: 1%; color: white;">
+			AccountId : <input type="text" name="smsaccountId" value="">
+		</div>
+
+		<div style="padding: 1%; color: white;">
+			Password : <input type="text" name="smspassword" value="">
+		</div>
+		
+		<div style="padding: 1%; color: white;">
+			Source : <input type="text" name="smssource" value="">
+		</div>
+		
+		<div style="padding: 1%; color: white;">
+			Recipients : <input type="text" name="smsrecipients" value="">
+		</div>
+		
+		<br/>
+		<div style="padding: 1%; color: white; font-weight: bold;">Email Credentials</div>
+		<div style="padding: 1%; color: white;">
+			AccountId : <input type="text" name="emailaccountId" value="">
+		</div>
+
+		<div style="padding: 1%; color: white;">
+			Password : <input type="text" name="emailpassword" value="">
+		</div>
+		
+		<div style="padding: 1%; color: white;">
+			Source : <input type="text" name="emailname" value="">
+		</div>
+		
+		<div style="padding: 1%; color: white;">
+			Source : <input type="text" name="emailsubject" value="">
+		</div>
+		
+		<div style="padding: 1%; color: white;">
+			Recipients : <input type="text" name="emailrecipients" value="">
+		</div>
+
+		<INPUT TYPE="SUBMIT" style="margin-left: 1%;" value="Submit" />
+
+	</FORM>
+
+	<center>
+		<div id="toolbar"
+			style="position: fixed; bottom: 0px; left: 0px; width: 100%; color: #fff; background: transparent;">
+			Powered By Teamchat Solutions Engineering</div>
+	</center>
+
+</BODY>
+
+</HTML>
