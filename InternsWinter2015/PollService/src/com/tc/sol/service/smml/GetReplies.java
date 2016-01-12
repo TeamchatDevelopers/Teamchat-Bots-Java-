@@ -1,6 +1,7 @@
 package com.tc.sol.service.smml;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -75,6 +76,8 @@ public class GetReplies extends HttpServlet {
 		response.getWriter().append(question);
 
 		OkHttpClient client2 = new OkHttpClient();
+		client2.setConnectTimeout(15, TimeUnit.SECONDS); // connect timeout
+		client2.setReadTimeout(15, TimeUnit.SECONDS);    // socket timeout
 
 		Request request2 = new Request.Builder()
 				.url(Utility.config.getProperty(KEYWORDS.GET_REPLIES_URL).replace("_"+KEYWORDS.SM_ID, smid).replace("_"+KEYWORDS.API_KEY, apikey))
@@ -85,8 +88,10 @@ public class GetReplies extends HttpServlet {
 		Response response2 = client2.newCall(request2).execute();
 
 		String replies = response2.body().string();
+		System.out.println(replies);
 
-		response.getWriter().append(replies);
+		response.getWriter().write(replies);
+
 
 	}
 

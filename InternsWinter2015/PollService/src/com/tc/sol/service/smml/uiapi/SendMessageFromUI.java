@@ -52,10 +52,32 @@ public class SendMessageFromUI extends HttpServlet {
 				writer.close();
 			}
 			
-			String smId = request.getParameter(KEYWORDS.SM_SERVICE_API_KEY);
+			String smId = request.getParameter(KEYWORDS.SM_SERVICE_SM_ID);
 			if (smId != null && !smId.equalsIgnoreCase("")) {
+				//This is the place where the user wants the replies
+				String apiKey = request.getParameter("apiKey2");
 				
+				MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
+				OkHttpClient client = new OkHttpClient();
+				client.setConnectTimeout(15, TimeUnit.SECONDS); // connect timeout
+				client.setReadTimeout(15, TimeUnit.SECONDS);    // socket timeout
 				
+				String body_str = KEYWORDS.SM_SERVICE_SM_ID+"="+smId;
+						
+				RequestBody body = RequestBody.create(mediaType, body_str);
+				
+				Request sendMsgRequest = new Request.Builder()
+						.url("http://localhost:8080/SmartMessageService/getReplies")
+						.post(body)
+						.addHeader(KEYWORDS.SM_SERVICE_API_KEY, apiKey)
+						.addHeader("content-type", "application/x-www-form-urlencoded")
+						.build();
+
+				Response res = client.newCall(sendMsgRequest).execute();
+				
+				String replies = res.body().string();
+				writer.write("<html>"+replies+"</html>");
+				res.body().close();
 				
 				return;
 			}
@@ -103,7 +125,7 @@ public class SendMessageFromUI extends HttpServlet {
 								+"&"+KEYWORDS.SMS_CREDS+"="+smsCreds
 								+"&"+KEYWORDS.EMAIL_CREDS+"="+emailCreds;
 					
-					RequestBody body = RequestBody.create(mediaType, body_str);
+			RequestBody body = RequestBody.create(mediaType, body_str);
 			
 			Request sendMsgRequest = new Request.Builder()
 					.url("http://localhost:8080/SmartMessageService/sendMsg")
@@ -115,8 +137,8 @@ public class SendMessageFromUI extends HttpServlet {
 			Response res = client.newCall(sendMsgRequest).execute();
 			
 			System.out.println("Response message: " + res.message());
-			System.out.println("Smart Message Id: " + new JSONObject(res.body().string()).getString(KEYWORDS.SM_ID));
-			writer.write(new JSONObject(res.body().string()).getString(KEYWORDS.SM_ID));
+			String smIdReceived = new JSONObject(res.body().string()).getString(KEYWORDS.SM_ID);
+			writer.write(smIdReceived);
 			res.body().close();
 			
 		} catch(Exception e) {
